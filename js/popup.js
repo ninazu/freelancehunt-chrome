@@ -339,20 +339,19 @@ function UpdateNewMessages(){
 	if (localStorage.getItem("MS") != null) {
 		let FeedData = JSON.parse(localStorage.getItem('MS'));
 		
-		$.each(FeedData, function(key, value){
+		$.each(FeedData.data, function(key, value){
 			let obj = JSON.parse(JSON.stringify(value));
-
-			console.log("UpdateNewMessage", obj);
+			obj = obj['attributes'];
 			
-			// if (obj.subject == '') obj.subject = 'Тема сообщения не указана.';
-			//
-			// $('<div id="thread" class="new_'+obj.is_unread+'" for="'+ obj.url_api+'" value="'+ obj.thread_id +'">'+ // undef or yes
-			// '<div id="logo">'+
-			// '<img src="'+ obj.from.avatar +'" /></div>'+
-			// '<div id="mstitle">'+ obj.subject +'</div><span id="umnew">'+ obj.message_count +'</span>'+
-			// '<div id="msdesc">'+ obj.from.fname +' '+ obj.from.sname +'</div>'+
-			// '<div id="info"><span><abbr class="timeago" title="'+ obj.last_post_time +'">...</abbr></span>'+
-			// '</div></div>').appendTo("#id_ms #data");
+			if (obj.subject == '') obj.subject = 'Тема сообщения не указана.';
+
+			$('<div id="thread" class="new_'+obj.is_unread+'" for="'+ obj.url_api+'" value="'+ obj.thread_id +'">'+ // undef or yes
+			'<div id="logo">'+
+			'<img src="'+ obj.participants.from.avatar.small.url +'" /></div>'+
+			'<div id="mstitle">'+ obj.subject +'</div><span id="umnew">'+ obj.messages_count +'</span>'+
+			'<div id="msdesc">'+ obj.participants.from.first_name +' '+ obj.participants.from.last_name +'</div>'+
+			'<div id="info"><span><abbr class="timeago" title="'+ obj.last_post_time +'">...</abbr></span>'+
+			'</div></div>').appendTo("#id_ms #data");
 			
 		});
 		
@@ -374,13 +373,12 @@ function UpdateFeeD(){
 		
 		$('#id_fd #data').html('');
 		
-		$.each(FeedData, function(key, value){
+		$.each(FeedData.data, function(key, value){
 			let obj = JSON.parse(JSON.stringify(value));
-
-			console.log("UpdateFeed", obj);
+			obj = obj['attributes'];
 				
-			// $('<div id="feed_id" class="icon-info i'+ obj.is_new +'"><span id="uad" for="https://api.freelancehunt.com/v2/profiles/'+ obj.from.login +'">'+
-			// obj.from.login +'</span> '+obj.message+'</div>').appendTo('#id_fd #data');
+			$('<div id="feed_id" class="icon-info i'+ obj.is_new +'"><span id="uad" for="https://api.freelancehunt.com/v2/profiles/'+ obj.from.login +'">'+
+			obj.from.login +'</span> '+obj.message+'</div>').appendTo('#id_fd #data');
 						
 		});
 
@@ -431,17 +429,18 @@ function Initialize() {
 			if (Data.budget_amount !== undefined) {
 				budjet = Data.budget_amount +' '+Data.budget_currency_code;
 			}
+
+			console.log("LocalStorage", Data);
 			
-			
-			$('<div id="project" class="'+Data.readed+'">'+ // undef or yes
-			'<div id="logo" for="'+ Data.from.url_api+'">'+
-			'<img src="'+ Data.from.avatar +'" /></div>'+ 
-			'<div id="title"><a href="'+ Data.url +'">'+ Data.name +'</a><span class="uprice">'+ budjet +'</span></div>'+
-			'<div id="desc" for="'+ Data.project_id +'">'+ Data.description +'</div>'+'<div id="info">'+
-			'<span><abbr class="timeago" title="'+ Data.publication_time +'">...</abbr></span>'+
-			'<span>'+ Data.status_name +'</span>'+
-			'<span>Ставок: '+ Data.bid_count +'</span>'+
-			'</div></div>').appendTo("#id_pj #data");
+			// $('<div id="project" class="'+Data.readed+'">'+ // undef or yes
+			// '<div id="logo" for="'+ Data.from.url_api+'">'+
+			// '<img src="'+ Data.from.avatar +'" /></div>'+
+			// '<div id="title"><a href="'+ Data.url +'">'+ Data.name +'</a><span class="uprice">'+ budjet +'</span></div>'+
+			// '<div id="desc" for="'+ Data.project_id +'">'+ Data.description +'</div>'+'<div id="info">'+
+			// '<span><abbr class="timeago" title="'+ Data.publication_time +'">...</abbr></span>'+
+			// '<span>'+ Data.status_name +'</span>'+
+			// '<span>Ставок: '+ Data.bid_count +'</span>'+
+			// '</div></div>').appendTo("#id_pj #data");
 	
 		}
     }
