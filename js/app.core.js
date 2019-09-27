@@ -9,25 +9,25 @@
 (function($){
 	
 	$.sign = function(api_token, api_secret, url, method, post_params) {
-		var str = CryptoJS.HmacSHA256(url+method+post_params, api_secret);
+		let str = CryptoJS.HmacSHA256(url+method+post_params, api_secret);
 		return btoa(api_token+':'+btoa(str.toString(CryptoJS.enc.Latin1)));
 	},
 	
 	$.GenerateToken = function(Jurl) {
-		var api_token  = localStorage.getItem('FID'); 
-		var api_secret = localStorage.getItem('FKEY'); 
+		let api_token  = localStorage.getItem('FID'); 
+		let api_secret = localStorage.getItem('FKEY'); 
 		return this.sign($.trim(api_token), $.trim(api_secret), Jurl, "GET", '');
 	},
 	
     $.GenerateTokenPOST = function(Jurl, post_params) {
-        var api_token  = localStorage.getItem('FID'); 
-        var api_secret = localStorage.getItem('FKEY'); 
+        let api_token  = localStorage.getItem('FID'); 
+        let api_secret = localStorage.getItem('FKEY'); 
         return this.sign($.trim(api_token), $.trim(api_secret), Jurl, "POST", post_params);
     },
 	
 	$.SendData = function(Url, msg) {
 		
-	var JsData = JSON.stringify({"message": msg});
+	let JsData = JSON.stringify({"message": msg});
 		
 	$.ajax({
 		url: Url,
@@ -85,7 +85,7 @@
 		success: function (data) {
 
 			$.each(data, function (key, json) {
-				var obj = JSON.parse(JSON.stringify(json));	
+				let obj = JSON.parse(JSON.stringify(json));	
 				if (localStorage[JName+':'+obj.project_id] == undefined) {
 				localStorage[JName+':'+obj.project_id] = JSON.stringify(json); }
 			});
@@ -102,7 +102,7 @@
 	
 	$.DeleteExp = function() {
 		
-		var its = 0;
+		let its = 0;
 		itsDB = new RegExp("^" + "DB:");
 		
 		for (i = localStorage.length; i >= 0; i--) {
@@ -121,12 +121,12 @@
 
 	$.MSCount = function() {
 	
-		var mcount = 0;
+		let mcount = 0;
 		if (localStorage.getItem("MS") != null) {
-			var FeedData = JSON.parse(localStorage.getItem('MS'));
+			let FeedData = JSON.parse(localStorage.getItem('MS'));
 		
 		$.each(FeedData, function(key, value){
-			var obj = JSON.parse(JSON.stringify(value));
+			let obj = JSON.parse(JSON.stringify(value));
 		
 				if (obj.is_unread == true){
 					mcount++;
@@ -139,14 +139,14 @@
 	
 	$.UpdateCount = function() {
 		
-		var mscount = this.MSCount();
+		let mscount = this.MSCount();
 		
 		itsDB = new RegExp("^" + "DB:");
-		var count = 0;
+		let count = 0;
 		for(i = 0; i <= localStorage.length; i++){ 
 			if (itsDB.test(localStorage.key(i))) {
 				
-				var Data = JSON.parse(localStorage[localStorage.key(i)]);
+				let Data = JSON.parse(localStorage[localStorage.key(i)]);
 				if (Data.readed != true) { count++; }
 				
 			}

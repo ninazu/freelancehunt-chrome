@@ -34,7 +34,7 @@
       return inWords($.timeago.datetime(timestamp));
     }
   };
-  var $t = $.timeago;
+  let $t = $.timeago;
 
   $.extend($.timeago, {
     settings: {
@@ -62,9 +62,9 @@
       }
     },
     inWords: function(distanceMillis) {
-      var $l = this.settings.strings;
-      var prefix = $l.prefixAgo;
-      var suffix = $l.suffixAgo;
+      let $l = this.settings.strings;
+      let prefix = $l.prefixAgo;
+      let suffix = $l.suffixAgo;
       if (this.settings.allowFuture) {
         if (distanceMillis < 0) {
           prefix = $l.prefixFromNow;
@@ -72,19 +72,19 @@
         }
       }
 
-      var seconds = Math.abs(distanceMillis) / 1000;
-      var minutes = seconds / 60;
-      var hours = minutes / 60;
-      var days = hours / 24;
-      var years = days / 365;
+      let seconds = Math.abs(distanceMillis) / 1000;
+      let minutes = seconds / 60;
+      let hours = minutes / 60;
+      let days = hours / 24;
+      let years = days / 365;
 
       function substitute(stringOrFunction, number) {
-        var string = $.isFunction(stringOrFunction) ? stringOrFunction(number, distanceMillis) : stringOrFunction;
-        var value = ($l.numbers && $l.numbers[number]) || number;
+        let string = $.isFunction(stringOrFunction) ? stringOrFunction(number, distanceMillis) : stringOrFunction;
+        let value = ($l.numbers && $l.numbers[number]) || number;
         return string.replace(/%d/i, value);
       }
 
-      var words = seconds < 45 && substitute($l.seconds, Math.round(seconds)) ||
+      let words = seconds < 45 && substitute($l.seconds, Math.round(seconds)) ||
         seconds < 90 && substitute($l.minute, 1) ||
         minutes < 45 && substitute($l.minutes, Math.round(minutes)) ||
         minutes < 90 && substitute($l.hour, 1) ||
@@ -96,12 +96,12 @@
         years < 1.5 && substitute($l.year, 1) ||
         substitute($l.years, Math.round(years));
 
-      var separator = $l.wordSeparator || "";
+      let separator = $l.wordSeparator || "";
       if ($l.wordSeparator === undefined) { separator = " "; }
       return $.trim([prefix, words, suffix].join(separator));
     },
     parse: function(iso8601) {
-      var s = $.trim(iso8601);
+      let s = $.trim(iso8601);
       s = s.replace(/\.\d+/,""); // remove milliseconds
       s = s.replace(/-/,"/").replace(/-/,"/");
       s = s.replace(/T/," ").replace(/Z/," UTC");
@@ -109,7 +109,7 @@
       return new Date(s);
     },
     datetime: function(elem) {
-      var iso8601 = $t.isTime(elem) ? $(elem).attr("datetime") : $(elem).attr("title");
+      let iso8601 = $t.isTime(elem) ? $(elem).attr("datetime") : $(elem).attr("title");
       return $t.parse(iso8601);
     },
     isTime: function(elem) {
@@ -121,11 +121,11 @@
   // functions that can be called via $(el).timeago('action')
   // init is default when no action is given
   // functions are called with context of a single element
-  var functions = {
+  let functions = {
     init: function(){
-      var refresh_el = $.proxy(refresh, this);
+      let refresh_el = $.proxy(refresh, this);
       refresh_el();
-      var $s = $t.settings;
+      let $s = $t.settings;
       if ($s.refreshMillis > 0) {
         setInterval(refresh_el, $s.refreshMillis);
       }
@@ -137,7 +137,7 @@
   };
 
   $.fn.timeago = function(action, options) {
-    var fn = action ? functions[action] : functions.init;
+    let fn = action ? functions[action] : functions.init;
     if(!fn){
       throw new Error("Unknown function name '"+ action +"' for timeago");
     }
@@ -149,7 +149,7 @@
   };
 
   function refresh() {
-    var data = prepareData(this);
+    let data = prepareData(this);
     if (!isNaN(data.datetime)) {
       $(this).text(inWords(data.datetime));
     }
@@ -160,7 +160,7 @@
     element = $(element);
     if (!element.data("timeago")) {
       element.data("timeago", { datetime: $t.datetime(element) });
-      var text = $.trim(element.text());
+      let text = $.trim(element.text());
       if ($t.settings.localeTitle) {
         element.attr("title", element.data('timeago').datetime.toLocaleString());
       } else if (text.length > 0 && !($t.isTime(element) && element.attr("title"))) {
@@ -188,7 +188,7 @@
     // f - 1, 21, 31, ...
     // s - 2-4, 22-24, 32-34 ...
     // t - 5-20, 25-30, ...
-    var n10 = n % 10;
+    let n10 = n % 10;
     if ( (n10 == 1) && ( (n == 1) || (n > 20) ) ) {
       return f;
     } else if ( (n10 > 1) && (n10 < 5) && ( (n > 20) || (n < 10) ) ) {

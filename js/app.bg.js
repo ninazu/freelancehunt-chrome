@@ -4,11 +4,11 @@
 	http://freelancehunt.com/freelancer/Vaskevych.html
 */
 
-var api_prj  = "https://api.freelancehunt.com/projects",
-	api_feed = "https://api.freelancehunt.com/my/feed",
-	api_mess = "https://api.freelancehunt.com/threads",
-	api_prof = "https://api.freelancehunt.com/profiles/me",
-	api_skil = "https://api.freelancehunt.com/skills";
+let api_prj  = "https://api.freelancehunt.com/v2/projects",
+	api_feed = "https://api.freelancehunt.com/v2/my/feed",
+	api_mess = "https://api.freelancehunt.com/v2/threads",
+	api_prof = "https://api.freelancehunt.com/v2/my/profile",
+	api_skil = "https://api.freelancehunt.com/v2/skills";
 	
 $(document).ready(function() {
 	
@@ -52,10 +52,10 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 	
 });
 
-// 10 minutes interval
+// 1 minutes interval
 setInterval(function() { 
 	chrome.runtime.sendMessage({method:"Update"}, null);
-}, 600000);
+}, 60000);
 
 // First Run App
 chrome.runtime.sendMessage({method:"Update"}, null);

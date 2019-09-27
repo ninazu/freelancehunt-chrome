@@ -8,8 +8,8 @@ $(document).ready(function() {
 
 // ======================== NAVIGATION ====================================
 
-var WorkMode = '';
-var Th_Url = "https://api.freelancehunt.com/threads/";
+let WorkMode = '';
+let Th_Url = "https://api.freelancehunt.com/v2/threads/";
 
 function SetAllReaded() {
 	
@@ -19,7 +19,7 @@ function SetAllReaded() {
 		base = localStorage.key(i);
 		
 		if (itsDB.test(base)) {
-			var Data = JSON.parse(localStorage[base]);
+			let Data = JSON.parse(localStorage[base]);
 			Data.readed = true;
 			localStorage[base] = JSON.stringify(Data);
 		}	
@@ -43,14 +43,14 @@ function ShowStats(){
 		$("#graph > thead").html("");
 		$(".visualize-bar").remove();
 		
-		var tbody = $('#graph tbody');
-		var thead = $('#graph thead');
+		let tbody = $('#graph tbody');
+		let thead = $('#graph thead');
 		
-		var tr = $('<tr>'); var th = $('<tr>');
+		let tr = $('<tr>'); let th = $('<tr>');
 		
 		$.each(JSON.parse(localStorage["RATINGS"]), function(i, reservation) {
 		  
-		  var date = new Date(reservation['date'])
+		  let date = new Date(reservation['date'])
 		  
 		  $('<th>'+ date.getDate() +'-'+ (date.getMonth() + 1) +'-'+ date.getFullYear() +'</th>').appendTo(th);
 		  $('<td>'+ reservation['rating'] +'</td>').appendTo(tr);
@@ -102,11 +102,11 @@ $('#menu li').unbind().click(function() {
 function LoadSkills(){
 	
 	$('#id_fl #data').html('');
-	var Data = JSON.parse(localStorage.getItem('SKL'));
+	let Data = JSON.parse(localStorage.getItem('SKL'));
 	
 	$.each(Data, function(key, value){
 		
-		var obj = JSON.parse(JSON.stringify(value));	
+		let obj = JSON.parse(JSON.stringify(value));	
 		
 		if (localStorage.getItem('ME_SKL') == null) { checker = ""; } else {
 		if (localStorage.getItem('ME_SKL').indexOf(obj.skill_id + ",") >= 0) {checker = "checked";} else { checker = ""; }}
@@ -117,7 +117,7 @@ function LoadSkills(){
 	});
 	
 	$( "#id_fl #data .chb" ).unbind().change(function() {  
-		var skills = '';	  
+		let skills = '';	  
 		$('#id_fl #data input:checked').each(function() {
 			skills += $(this).attr('name') + ',';
 		}); 
@@ -139,7 +139,7 @@ $("#saveitems").unbind().click(function() {
 });	
 
 function CheckSettings() {
-	var result = true;
+	let result = true;
 	if (localStorage.length == 0) { result = false; } else
 	
 	if ((localStorage.getItem('FID') == null) || (localStorage.getItem('FKEY') == null)) {
@@ -223,9 +223,9 @@ $('#msg_text').unbind().keydown(function (e) {
 		
 function ShowCustomHtml() {
 	
-	var profile_id = 0;
+	let profile_id = 0;
 	if (localStorage.getItem("PROFILE") != null) {
-		var Data = JSON.parse(localStorage.getItem('PROFILE'));
+		let Data = JSON.parse(localStorage.getItem('PROFILE'));
 		profile_id = Data.profile_id;	  
 	}
 		
@@ -234,10 +234,10 @@ function ShowCustomHtml() {
 	HideAllDiv();
 	$('#id_us').css('display', 'block');
 	
-	var Data = JSON.parse(localStorage.getItem('TMP'));
+	let Data = JSON.parse(localStorage.getItem('TMP'));
 	
-	var online = '<abbr class="timeago" title="'+ Data.last_activity +'"></abbr>';
-	if (Data.is_online ==  true) { var online = 'сейчас на сайте'; }
+	let online = '<abbr class="timeago" title="'+ Data.last_activity +'"></abbr>';
+	if (Data.is_online ==  true) { let online = 'сейчас на сайте'; }
 	
 	$('#id_us #data').css('padding-left', '10px').html('<table border="0" id="user_data">'+
 					'<tr><td colspan="2"><a href="'+ Data.url +'"><b style="font-size: 16px;">'+Data.fname +' '+ Data.sname + ' ('+ Data.login +')</b></a>'+
@@ -256,7 +256,7 @@ function ShowCustomHtml() {
 					'</td><tr></table>');
 					
 		$('.img-thm').error(function() {
-			var ImSrc = $(this).attr('src');
+			let ImSrc = $(this).attr('src');
 			$(this).attr('src', ImSrc.replace('/avatar/225/', '/avatar/50/'));
 		});
 					
@@ -275,12 +275,12 @@ function ShowCustomHtml() {
 	HideAllDiv();
 	$('#id_ms_thr').css('display', 'block');
 	
-		var Data = JSON.parse(localStorage.getItem('TMP'));
+		let Data = JSON.parse(localStorage.getItem('TMP'));
 		$('#id_ms_thr #data #msg_feed').html('');
 		
 		$.each(Data, function(key, value){
 			
-			var obj = JSON.parse(JSON.stringify(value));
+			let obj = JSON.parse(JSON.stringify(value));
 			if (obj.from.profile_id == profile_id) { rpos = 'right'; lpos = 'left'; } else { rpos = 'left'; lpos = 'right'; }
 		
 			$('<div id="msg"><div id="msglogo" style="float: '+rpos+'"><img src="'+obj.from.avatar+'" /></div><div id="msgbody" class="chat chat-'+
@@ -289,7 +289,7 @@ function ShowCustomHtml() {
 			});
 			
 		$('#id_ms_thr #data #msg_feed img').each(function(){
-			var src = $(this).attr('src')
+			let src = $(this).attr('src')
 			if (src.charAt(0) == '/') {
 				src = 'https:' + src;
 			}
@@ -303,18 +303,18 @@ function ShowCustomHtml() {
 	
 function UpdateUser(){
 	if (localStorage.getItem("PROFILE") != null) {
-		var Data = JSON.parse(localStorage.getItem('PROFILE'));
+		let Data = JSON.parse(localStorage.getItem('PROFILE'));
 		$('#u_name').html(Data.fname+' '+Data.sname);
 		$('#flicks').html(Data.rating);	  
 				
 		if (localStorage.getItem("RATINGS") == null) {
-			var param = [];
+			let param = [];
 			param.push({"date":$.now(), "rating":Data.rating});		
 			localStorage["RATINGS"] = JSON.stringify(param);
 			
 		} else {
 			
-			var storedNames = [];
+			let storedNames = [];
 			storedNames = JSON.parse(localStorage["RATINGS"]);				
 			if (storedNames[storedNames.length - 1]['rating'] != Data.rating) {
 				storedNames.push({"date":$.now(), "rating":Data.rating});		
@@ -325,7 +325,7 @@ function UpdateUser(){
 }
 
 function ShowMSCount(){
-	var count = $.MSCount();	
+	let count = $.MSCount();	
 	if (count == 0){ $('#umnew2').hide();
 	} else { $('#umnew2').html(count).show(); }	
 }
@@ -337,20 +337,22 @@ function UpdateNewMessages(){
 	$('#id_ms #data').html('');
 
 	if (localStorage.getItem("MS") != null) {
-		var FeedData = JSON.parse(localStorage.getItem('MS'));
+		let FeedData = JSON.parse(localStorage.getItem('MS'));
 		
 		$.each(FeedData, function(key, value){
-			var obj = JSON.parse(JSON.stringify(value));
+			let obj = JSON.parse(JSON.stringify(value));
+
+			console.log("UpdateNewMessage", obj);
 			
-			if (obj.subject == '') obj.subject = 'Тема сообщения не указана.';
-			
-			$('<div id="thread" class="new_'+obj.is_unread+'" for="'+ obj.url_api+'" value="'+ obj.thread_id +'">'+ // undef or yes
-			'<div id="logo">'+
-			'<img src="'+ obj.from.avatar +'" /></div>'+ 
-			'<div id="mstitle">'+ obj.subject +'</div><span id="umnew">'+ obj.message_count +'</span>'+
-			'<div id="msdesc">'+ obj.from.fname +' '+ obj.from.sname +'</div>'+
-			'<div id="info"><span><abbr class="timeago" title="'+ obj.last_post_time +'">...</abbr></span>'+
-			'</div></div>').appendTo("#id_ms #data");
+			// if (obj.subject == '') obj.subject = 'Тема сообщения не указана.';
+			//
+			// $('<div id="thread" class="new_'+obj.is_unread+'" for="'+ obj.url_api+'" value="'+ obj.thread_id +'">'+ // undef or yes
+			// '<div id="logo">'+
+			// '<img src="'+ obj.from.avatar +'" /></div>'+
+			// '<div id="mstitle">'+ obj.subject +'</div><span id="umnew">'+ obj.message_count +'</span>'+
+			// '<div id="msdesc">'+ obj.from.fname +' '+ obj.from.sname +'</div>'+
+			// '<div id="info"><span><abbr class="timeago" title="'+ obj.last_post_time +'">...</abbr></span>'+
+			// '</div></div>').appendTo("#id_ms #data");
 			
 		});
 		
@@ -368,20 +370,22 @@ function UpdateNewMessages(){
 function UpdateFeeD(){
 
 	if (localStorage.getItem("FEED") != null) {
-		var FeedData = JSON.parse(localStorage.getItem('FEED'));
+		let FeedData = JSON.parse(localStorage.getItem('FEED'));
 		
 		$('#id_fd #data').html('');
 		
 		$.each(FeedData, function(key, value){
-			var obj = JSON.parse(JSON.stringify(value));
+			let obj = JSON.parse(JSON.stringify(value));
+
+			console.log("UpdateFeed", obj);
 				
-			$('<div id="feed_id" class="icon-info i'+ obj.is_new +'"><span id="uad" for="https://api.freelancehunt.com/profiles/'+ obj.from.login +'">'+ 
-			obj.from.login +'</span> '+obj.message+'</div>').appendTo('#id_fd #data');
+			// $('<div id="feed_id" class="icon-info i'+ obj.is_new +'"><span id="uad" for="https://api.freelancehunt.com/v2/profiles/'+ obj.from.login +'">'+
+			// obj.from.login +'</span> '+obj.message+'</div>').appendTo('#id_fd #data');
 						
 		});
-		
+
 		$('#id_fd img').each(function(){
-			var src = $(this).attr('src')
+			let src = $(this).attr('src')
 			if (src.charAt(0) == '/') {
 				if (src.indexOf("//") != -1) {
 				src = 'https:' + src;	
@@ -421,8 +425,8 @@ function Initialize() {
 		
 		if (itsDB.test(base)) {
 	
-			var budjet = '';
-			var Data = JSON.parse(localStorage[base]);
+			let budjet = '';
+			let Data = JSON.parse(localStorage[base]);
 			
 			if (Data.budget_amount !== undefined) {
 				budjet = Data.budget_amount +' '+Data.budget_currency_code;

@@ -6,7 +6,8 @@
   "version": "3.0",
   "permissions": [
     "tabs",
-	"storage"
+	"storage",
+    "https://api.freelancehunt.com/"
   ],
   "background": {
     "page": "bg.html"
